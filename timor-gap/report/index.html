@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulation Study — TIMOR GAP Example Report</title>
+<style>
+  :root{
+    --blue:#1f55a5;          /* TIMORGAP brand blue */
+    --navy:#14365c;
+    --deep-blue:#1f3f7a;     /* cover heading blue */
+    --green:#1e9e50;         /* brand green */
+    --deep-green:#1e6b44;    /* section-title green */
+    --green-soft:#a9d492;    /* thin accent rules */
+    --green-pale:#eaf4e4;    /* callout background */
+    --ink:#2f3437;
+    --muted:#8a9299;
+    --line:#e3e7ea;
+    --sans:"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f2f4f6;font-family:var(--sans);color:var(--ink);line-height:1.55}
+
+  .page{max-width:900px;margin:0 auto;background:#fff;padding:56px 72px 64px;position:relative;
+    box-shadow:0 2px 18px rgba(20,54,92,.08);border-bottom:4px solid var(--blue)}
+  .page + .page{margin-top:28px}
+
+  /* running header */
+  .runhead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);
+    padding-bottom:12px;margin-bottom:40px}
+  .wordmark{font-weight:800;font-size:19px;letter-spacing:.04em;color:var(--navy)}
+  .wordmark i{font-style:normal;color:var(--green)}
+  .runhead .rh{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  .eyebrow{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--green-soft);
+    font-weight:700;margin-bottom:14px}
+  .eyebrow.dark{color:var(--green)}
+
+  h1{font-size:46px;line-height:1.08;color:var(--navy);letter-spacing:-.01em;margin-bottom:18px;font-weight:800}
+  h1 .accent{color:var(--deep-blue)}
+  .rule{width:64px;height:4px;background:var(--green-soft);margin:22px 0 26px}
+  h2{font-size:30px;color:var(--navy);font-weight:800;margin-bottom:6px;letter-spacing:-.005em}
+  h3{font-size:18px;color:var(--navy);font-weight:700;margin:26px 0 8px}
+  p{margin-bottom:14px;font-size:15.5px}
+  .lead{font-size:18px;color:#42484c}
+  .muted{color:var(--muted)}
+
+  .demo-banner{background:var(--navy);color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    text-align:center;padding:10px 16px}
+  .demo-banner b{color:#8fe0ae}
+
+  /* KPI band, styled like the TOC numerals */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);margin:34px 0 8px}
+  .kpi{padding:20px 14px 18px;border-left:1px solid var(--line)}
+  .kpi:first-child{border-left:none}
+  .kpi b{display:block;font-size:26px;color:var(--green);font-weight:800;letter-spacing:-.01em}
+  .kpi span{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;line-height:1.45}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:10px}
+
+  .callout{background:var(--green-pale);border-left:5px solid var(--green);padding:20px 24px;margin:26px 0;
+    font-size:15.5px}
+  .callout b{color:var(--deep-green)}
+  .quote{background:none;border:none;border-top:4px solid var(--green-soft);border-bottom:4px solid var(--green-soft);
+    padding:18px 4px;margin:30px 0;font-size:19px;font-weight:700;color:var(--green)}
+
+  figure{margin:26px 0}
+  figure img{width:100%;display:block;border:1px solid var(--line)}
+  figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+  figcaption b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14.5px}
+  th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;
+    border-bottom:2px solid var(--navy);padding:10px 12px 8px;font-weight:700}
+  td{border-bottom:1px solid var(--line);padding:11px 12px}
+  td.g{color:var(--green);font-weight:700}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+  .secno{font-size:15px;font-weight:800;color:var(--green);letter-spacing:.08em;margin-bottom:4px}
+
+  .steps{counter-reset:st;margin:20px 0}
+  .step{display:flex;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:none}
+  .step .n{flex:none;width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+  .step div p{margin:0;font-size:15px}
+  .step div b{color:var(--navy)}
+
+  .btns{display:flex;gap:14px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font-weight:700;font-size:15px;
+    padding:13px 22px;border-radius:4px}
+  .btn.green{background:var(--green)}
+  .btn:hover{filter:brightness(1.08)}
+
+  .foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);
+    margin-top:44px;padding-top:14px;font-size:12.5px;color:var(--muted)}
+
+  a{color:var(--blue)}
+
+  @media (max-width:760px){
+    .page{padding:34px 22px 44px}
+    .cols{grid-template-columns:1fr}
+    .kpis{grid-template-columns:1fr 1fr;border:none}
+    .kpi{border:1px solid var(--line);margin:-1px 0 0 -1px}
+    h1{font-size:34px}
+  }
+  @media print{
+    body{background:#fff}
+    .page{box-shadow:none;max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner"><b>Example report</b> · synthetic tNavigator BLACK_OIL_DEMO dataset · prepared by Rock Flow Dynamics to demonstrate AI-agent reporting for TIMOR GAP</div>
+
+<!-- ============ COVER / OVERVIEW ============ -->
+<section class="page">
+  <div class="runhead">
+    <span class="wordmark">TIM<i>O</i>RGAP <span style="font-weight:400;color:var(--muted);font-size:14px">· style example</span></span>
+    <span class="rh">Simulation Study · August 2026</span>
+  </div>
+
+  <div class="eyebrow dark">Reservoir Engineering — Example Study</div>
+  <h1>Simulation Study:<br><span class="accent">History Match &amp; 10-Year Forecast</span></h1>
+  <div class="rule"></div>
+  <p class="lead">Assisted history matching and decline-curve forecasting of the <b>BLACK_OIL_DEMO</b> field model,
+  executed end-to-end by an AI agent connected to <b>tNavigator</b> through the Local MCP Server.
+  The engineer supervised each step and made the final decisions; the agent ran the models,
+  the diagnostics and produced this report.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b>616</b><span>simulations run</span></div>
+    <div class="kpi"><b>65.1 → 2.77</b><span>objective function</span></div>
+    <div class="kpi"><b>54% → 7.3%</b><span>field water error</span></div>
+    <div class="kpi"><b>12% → 1.6%</b><span>field oil error</span></div>
+    <div class="kpi"><b>2.46 M sm³</b><span>field EUR</span></div>
+  </div>
+
+  <div class="cols" style="margin-top:26px">
+    <div>
+      <h3>Scope of work</h3>
+      <p>Differential-evolution history matching with a 200-run sensitivity screening, per-well
+      segmented decline-curve analysis, and a 10-year production forecast cross-checked against
+      the matched simulation model.</p>
+    </div>
+    <div>
+      <h3>Dataset &amp; tools</h3>
+      <p>tNavigator BLACK_OIL_DEMO tutorial model (synthetic), history 2011-05-15 to 2015-02-01,
+      15 producers. tNavigator 26.2 with the Local MCP Server; AI agent driving the full workflow API.</p>
+    </div>
+  </div>
+
+  <div class="quote">"The AI agent does the work — the engineer stays the engineer."</div>
+
+  <div class="foot"><span>TIMORGAP-style example · not an official TIMOR GAP publication</span><span>01</span></div>
+</section>
+
+<!-- ============ SECTION 01 · HISTORY MATCH ============ -->
+<section class="page">
+  <div class="runhead">
+    <span class="wordmark">TIM<i>O</i>RGAP <span style="font-weight:400;color:var(--muted);font-size:14px">· style example</span></span>
+    <span class="rh">01 · Assisted History Matching</span>
+  </div>
+
+  <div class="secno">SECTION 01</div>
+  <h2>Assisted History Matching</h2>
+  <div class="rule"></div>
+
+  <p>The agent began with rate matching, which produced a convincing first result — until measured
+  bottom-hole pressure exposed it as a false optimum. Skins, permeability corridors and completion
+  hypotheses were then evaluated individually, a 200-run sensitivity study identified the influential
+  parameters, and differential evolution converged on the final match with BHP included in the objective.</p>
+
+  <table>
+    <tr><th>Indicator</th><th class="num">Before</th><th class="num">After</th></tr>
+    <tr><td>Objective function</td><td class="num">65.1</td><td class="num g">2.77</td></tr>
+    <tr><td>Cumulative field water error</td><td class="num">54%</td><td class="num g">7.3%</td></tr>
+    <tr><td>Cumulative field oil error</td><td class="num">12%</td><td class="num g">1.6%</td></tr>
+    <tr><td>BHP gauge RMSE (W3 / W40)</td><td class="num">—</td><td class="num g">23% / 13%</td></tr>
+    <tr><td>Selected match</td><td class="num">—</td><td class="num g">v754</td></tr>
+  </table>
+
+  <figure>
+    <img src="../../assets/hm_results.png" alt="History match results, field rates and per-well panels">
+    <figcaption><b>Figure 1.</b> Field and per-well match quality: rates, water cut and measured BHP.
+    The engineer selected the compromise on the Pareto front between rate and pressure objectives.</figcaption>
+  </figure>
+
+  <div class="callout"><b>Engineering control.</b> The agent proposed each step; the engineer rejected an
+  artificial skin adjustment, demanded the sensitivity-first methodology and made the final Pareto trade-off.
+  Every iteration loop took minutes, not days.</div>
+
+  <div class="foot"><span>TIMORGAP-style example · not an official TIMOR GAP publication</span><span>02</span></div>
+</section>
+
+<!-- ============ SECTION 02 · FORECAST ============ -->
+<section class="page">
+  <div class="runhead">
+    <span class="wordmark">TIM<i>O</i>RGAP <span style="font-weight:400;color:var(--muted);font-size:14px">· style example</span></span>
+    <span class="rh">02 · Production Forecast</span>
+  </div>
+
+  <div class="secno">SECTION 02</div>
+  <h2>10-Year Production Forecast</h2>
+  <div class="rule"></div>
+
+  <p>Per-well decline-curve analysis was performed on the matched model, with one Arps fit per decline
+  cycle and AICc-based model selection (harmonic, exponential and hyperbolic mixes). Nine of fifteen
+  wells qualified for forecasting; the remainder had converted to injection. The DCA forecast was then
+  cross-checked against the simulation forecast as a physics feasibility check.</p>
+
+  <table>
+    <tr><th>Forecast indicator</th><th class="num">Value</th></tr>
+    <tr><td>Wells forecast</td><td class="num g">9 / 15</td></tr>
+    <tr><td>DCA 10-year volume</td><td class="num g">1.31 M sm³</td></tr>
+    <tr><td>Simulated 10-year volume</td><td class="num g">1.09 M sm³</td></tr>
+    <tr><td>DCA vs simulation gap</td><td class="num g">17%</td></tr>
+    <tr><td>Field EUR (produced + forecast)</td><td class="num g">2.46 M sm³</td></tr>
+  </table>
+
+  <figure>
+    <img src="../../assets/dca_results.png" alt="DCA forecast results and boundary conditions">
+    <figcaption><b>Figure 2.</b> Field oil rate: history, DCA forecast with boundary conditions,
+    and the matched-model simulation forecast used as the feasibility cross-check.</figcaption>
+  </figure>
+
+  <div class="callout"><b>Interpretation.</b> The 17% gap between decline-curve and simulation forecasts
+  is driven by pressure support in the matched model that empirical declines cannot see — a reminder to
+  anchor empirical forecasts to physics before reserves are booked.</div>
+
+  <div class="foot"><span>TIMORGAP-style example · not an official TIMOR GAP publication</span><span>03</span></div>
+</section>
+
+<!-- ============ SECTION 03 · HOW IT WAS PRODUCED ============ -->
+<section class="page">
+  <div class="runhead">
+    <span class="wordmark">TIM<i>O</i>RGAP <span style="font-weight:400;color:var(--muted);font-size:14px">· style example</span></span>
+    <span class="rh">03 · How This Report Was Produced</span>
+  </div>
+
+  <div class="secno">SECTION 03</div>
+  <h2>How This Report Was Produced</h2>
+  <div class="rule"></div>
+
+  <div class="steps">
+    <div class="step"><span class="n">1</span><div><p><b>Connect.</b> An AI agent connects to tNavigator
+    through the Local MCP Server — one installer component, launched from the GUI.</p></div></div>
+    <div class="step"><span class="n">2</span><div><p><b>Execute.</b> The agent plans and runs the study —
+    decks, 616 simulation runs, sensitivity screening, DCA — through the tNavigator workflow API.</p></div></div>
+    <div class="step"><span class="n">3</span><div><p><b>Supervise.</b> The engineer reviews diagnostics at
+    every step, redirects the methodology, and signs off the final match and forecast.</p></div></div>
+    <div class="step"><span class="n">4</span><div><p><b>Report.</b> The agent generates interactive dashboards
+    and this document automatically — in your corporate template, ready to share.</p></div></div>
+  </div>
+
+  <h3>Explore the live results</h3>
+  <p>The interactive dashboards behind Figures 1 and 2 are published online — open them during the
+  presentation or afterwards:</p>
+  <div class="btns">
+    <a class="btn" href="../../dashboards/hm_dashboard.html">History-match dashboard</a>
+    <a class="btn green" href="../../dashboards/dca_dashboard.html">DCA forecast dashboard</a>
+    <a class="btn" style="background:var(--navy)" href="../#5">Slide with both dashboards</a>
+  </div>
+
+  <div class="callout"><b>About this example.</b> Prepared by Rock Flow Dynamics with tNavigator 26.2 to
+  demonstrate AI-agent reporting in a TIMOR GAP-style template. All results derive from the synthetic
+  BLACK_OIL_DEMO tutorial dataset; this is not an official TIMOR GAP publication and contains no
+  TIMOR GAP data.</div>
+
+  <div class="foot"><span>Rock Flow Dynamics · tNavigator 26.2 · asktNav@rfdyn.com</span><span>04</span></div>
+</section>
+
+</body>
+</html>
