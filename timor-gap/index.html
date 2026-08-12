@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI in tNavigator — Timor GAP</title>
+<style>
+  /* ---------- brand fonts (shared with the webinar deck) ---------- */
+  @font-face{font-family:"PT Sans Narrow";font-weight:700;src:url("../assets/ptnarrow-bold.woff") format("woff")}
+  @font-face{font-family:"PT Sans";font-weight:400;src:url("../assets/ptsans-reg.woff") format("woff")}
+  @font-face{font-family:"PT Sans";font-weight:700;src:url("../assets/ptsans-bold.woff") format("woff")}
+
+  /* ---------- brand tokens (sampled from tNavigator 26.2 deck & logo) ---------- */
+  :root{
+    --deep:#10222e;
+    --chrome:#172a4a;
+    --blue:#1f6fb5;
+    --blue-deep:#15507f;
+    --green:#3f9243;
+    --teal:#0CCCA5;
+    --g1:#0AA2E2;--g2:#0CCCA5;
+    --aus-navy:#073049;
+    --sq-red:#dd3327;--sq-orange:#f29a22;--sq-green:#3f9243;--sq-blue:#1f6fb5;
+    --paper:#ffffff;
+    --panel:#f3f7fa;
+    --ink:#1a2b3a;
+    --muted:#5c7183;
+    --line:#d8e3ed;
+    --display:"PT Sans Narrow","Arial Narrow","Liberation Sans Narrow",Arial,sans-serif;
+    --body:"PT Sans","Segoe UI","Noto Sans",Arial,sans-serif;
+    --mono:Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#0a1620;font-family:var(--body);color:var(--ink);overflow:hidden}
+
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  .slide{width:1280px;height:720px;background:var(--paper);position:absolute;display:none;overflow:hidden;box-shadow:0 14px 70px rgba(0,0,0,.6)}
+  .slide.active{display:block}
+
+  .squares{display:inline-flex;gap:5px}
+  .squares i{width:10px;height:10px;display:block}
+  .squares i:nth-child(1){background:var(--sq-red)}
+  .squares i:nth-child(2){background:var(--sq-orange)}
+  .squares i:nth-child(3){background:var(--sq-green)}
+  .squares i:nth-child(4){background:var(--sq-blue)}
+
+  /* ---------- light-slide chrome ---------- */
+  .slide:not(.aus)::after{content:"";position:absolute;left:0;top:0;right:0;height:12px;
+    background:linear-gradient(90deg,var(--g1),var(--g2));z-index:9;pointer-events:none}
+  .tag{position:absolute;top:30px;right:40px;z-index:6;background:none;color:var(--aus-navy);
+    font:700 14px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;opacity:.75}
+  .foot{position:absolute;left:0;right:0;bottom:0;height:58px;z-index:6;background:var(--paper);
+    display:flex;align-items:center;justify-content:space-between;padding:0 30px 10px 26px}
+  .foot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;
+    background:linear-gradient(90deg,var(--g1),var(--g2))}
+  .foot img{height:36px;display:block}
+  .foot .pg{font:700 20px/1 var(--body);color:var(--aus-navy)}
+
+  .body{position:relative;z-index:3;padding:48px 64px 76px;height:100%;display:flex;flex-direction:column}
+  h1.title{font:700 46px/1.1 var(--display);color:var(--aus-navy);letter-spacing:.005em;margin-bottom:26px;text-wrap:balance}
+  .lead{font-size:21px;line-height:1.5;max-width:1080px}
+  .muted{color:var(--muted)}
+
+  /* ---------- dark slides ---------- */
+  .slide.dark{background:var(--aus-navy) url("../assets/aus_bg.png") center/cover no-repeat;color:#fff}
+  .slide.dark::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(5,25,38,.66) 0%,rgba(5,25,38,.38) 50%,rgba(5,25,38,.18) 100%)}
+  .slide.dark::after{content:"";position:absolute;left:0;top:0;right:0;height:12px;
+    background:linear-gradient(90deg,var(--g1),var(--g2));z-index:9;pointer-events:none}
+  .slide.dark .body{padding:64px 72px;justify-content:center}
+  .eyebrow{font:700 17px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin:22px 0 20px}
+  .slide.dark h1.big{font:700 76px/1.04 var(--display);color:#fff;letter-spacing:.005em;margin-bottom:24px;text-wrap:balance}
+  .slide.dark .sub{font-size:23px;line-height:1.5;color:#c4d5e2;max-width:900px}
+  .slide.dark .pgd{position:absolute;right:30px;bottom:20px;font:700 18px/1 var(--body);color:rgba(255,255,255,.55);z-index:6}
+
+  /* ---------- video ---------- */
+  .vidwrap{position:relative;margin-top:26px;flex:1;min-height:0;width:100%;max-width:1120px;
+    border:1px solid rgba(255,255,255,.25);background:rgba(4,14,20,.6)}
+  .vidwrap video{width:100%;height:100%;object-fit:contain;display:block}
+  .vidwrap.routea{width:auto;max-width:100%;aspect-ratio:3831/2087;align-self:center;transform:scale(.98175)}
+  .routea-layout{display:flex;align-items:stretch;gap:34px;flex:1;min-height:0;margin-top:26px}
+  .routea-copy{flex:0 0 20%;max-width:none;align-self:center}
+  .routea-layout .vidwrap.routea{flex:1;margin-top:0;max-width:none}
+
+  /* ---------- two-way comparison ---------- */
+  .ways{display:flex;gap:26px;flex:none;align-items:stretch;margin-top:4px}
+  .way{flex:1;border:1px solid var(--line);display:flex;flex-direction:column;position:relative}
+  .way .hd{padding:16px 20px;font:700 25px/1.15 var(--display);color:#fff;background:var(--blue-deep)}
+  .way.builtin .hd{background:var(--green)}
+  .way.mcp .hd{background:var(--chrome)}
+  .way .rows{padding:6px 20px 12px;display:flex;flex:1;flex-direction:column}
+  .way .row{padding:12px 0;border-bottom:1px solid var(--line);font-size:17.5px;line-height:1.4}
+  .way .row:last-child{border-bottom:none}
+  .way .row .k{display:block;font:700 12.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .good{color:var(--green);font-weight:700}
+  .care{color:var(--sq-red);font-weight:700}
+  .caveat{margin-top:26px;border-left:4px solid var(--sq-red);color:#8c2a22;background:#fdf3f2;padding:16px 20px;font-size:17px;line-height:1.45;text-align:left}
+
+  /* ---------- capability / license slide ---------- */
+  .cols{display:flex;gap:42px;flex:none;min-height:0;margin-top:18px}
+  .col{flex:1;min-width:0}
+  .cap{display:flex;gap:14px;align-items:baseline;padding:18px 2px;border-bottom:1px solid var(--line);font-size:21px}
+  .cap:last-child{border-bottom:none}
+  .cap .sq{width:11px;height:11px;background:var(--blue);align-self:center;flex:none}
+  .cap b{font-weight:700}
+  h3.h{font:700 25px/1.2 var(--display);color:var(--chrome);margin-bottom:12px}
+  .lic{display:flex;gap:14px;margin:12px 0 24px}
+  .chip{flex:1;background:var(--chrome);color:#fff;text-align:center;padding:22px 8px}
+  .chip b{display:block;font:700 32px/1.1 var(--display);color:var(--teal)}
+  .chip span{font-size:15px;color:#c9d8ea}
+  .note{background:var(--panel);border-left:4px solid var(--blue);padding:18px 20px;font-size:18px;line-height:1.5}
+
+  /* takeaways on dark */
+  .takes{list-style:none;margin-top:10px;max-width:none}
+  .takes li{font-size:26px;line-height:1.45;color:#e6eef5;padding:20px 0 20px 34px;position:relative;border-bottom:1px solid rgba(255,255,255,.14)}
+  .takes li:last-child{border-bottom:none}
+  .takes li::before{content:"";position:absolute;left:2px;top:29px;width:12px;height:12px;background:var(--teal)}
+  .takes b{color:#fff}
+
+  /* presenter notes + hud */
+  .notes{display:none;position:absolute;left:0;right:0;bottom:58px;background:rgba(255,247,219,.97);border-top:3px solid #d9ad00;color:#4a3d00;font-size:15.5px;line-height:1.45;padding:12px 24px;z-index:9}
+  body.shownotes .notes{display:block}
+  #hud{position:fixed;left:14px;top:10px;color:#4d6478;font-size:13px;z-index:99;font-family:var(--mono);opacity:.8}
+  :fullscreen #hud{display:none}
+
+  /* ---------- AUS template (cover / closing) ---------- */
+  .aus{background:#073049 url("../assets/aus_bg.png") center/cover no-repeat;color:#fff}
+  .aus::before{content:"";position:absolute;left:0;top:0;right:0;height:16px;
+    background:linear-gradient(90deg,#0AA2E2,#0BB9C6,#0CCCA5);z-index:2}
+  .aus-head{position:absolute;left:53px;top:44px;line-height:1.06}
+  .aus-head .rfd{font:700 21px/1.2 var(--body);letter-spacing:.34em;color:#fff;opacity:.92}
+  .aus-head .ws{font:900 42px/1.1 var(--display);letter-spacing:.06em;color:#fff}
+  .aus-logo{position:absolute;right:53px;top:44px;height:52px}
+  .aus-for{position:absolute;left:52px;top:224px;font:700 24px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;color:#0CCCA5}
+  .aus-title{position:absolute;left:50px;top:284px;max-width:1120px;
+    font:700 56px/1.12 var(--display);color:#fff}
+  .aus-presenter{position:absolute;left:52px;top:560px;line-height:1.9;
+    font:400 27px/1.3 var(--body);letter-spacing:.12em;color:#fff}
+  .aus-presenter b{font-weight:700}
+  .aus-presenter span{opacity:.75}
+  .aus-close-icon{position:absolute;left:95px;top:191px;width:126px;height:110px}
+  .aus-thanks{position:absolute;left:288px;top:222px;font:700 52px/1.2 var(--display);color:#fff}
+  .aus-thanks small{display:block;font:700 40px/1.3 var(--display);color:#0CCCA5;margin-top:10px}
+  .aus-mail{position:absolute;left:141px;top:500px;font:400 34px/1.3 var(--body);color:#fff;opacity:.9}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ 1 · COVER ============ -->
+<section class="slide aus">
+  <div class="aus-head"><div class="rfd">ROCK FLOW DYNAMICS</div><div class="ws">AI IN tNAVIGATOR</div></div>
+  <img class="aus-logo" src="../assets/aus_logo_white.png" alt="tNavigator">
+  <div class="aus-for">Prepared for TIMOR GAP</div>
+  <h1 class="aus-title">Internal AI Assistant<br>&amp; External AI Agents</h1>
+  <div class="aus-presenter"><b>ZAKHAR LANETC</b> <span>| RESERVOIR ENGINEER</span></div>
+  <div class="notes">Short client briefing (~10 min). One line of framing: tNavigator 26.2 offers two ways to use AI, a fully local built-in assistant and external AI agents connected through the Local MCP Server. Today: the difference, then two working examples.</div>
+</section>
+
+<!-- ============ 2 · INTERNAL VS EXTERNAL ============ -->
+<section class="slide">
+  <div class="tag">AI in tNavigator 26.2</div>
+  <div class="body">
+    <h1 class="title">Internal vs external: two ways to run AI</h1>
+    <div class="ways">
+      <div class="way builtin">
+        <div class="hd">Internal · Built-in AI Assistant</div>
+        <div class="rows">
+          <div class="row"><span class="k">Model</span>LLM shipped with tNavigator, runs on your hardware</div>
+          <div class="row"><span class="k">Knowledge</span>Embedded knowledge base (RAG)</div>
+          <div class="row"><span class="k">Control</span><span class="good">tNavigator controls executed AI commands</span></div>
+          <div class="row"><span class="k">Data</span><span class="good">Stays within the local tNavigator environment</span></div>
+          <div class="row"><span class="k">Best for</span>Q&amp;A, workflow generation, log analysis, fully offline</div>
+        </div>
+      </div>
+      <div class="way mcp">
+        <div class="hd">External · AI agent via Local MCP Server</div>
+        <div class="rows">
+          <div class="row"><span class="k">Model</span>Any MCP client: Claude, Codex, OpenCode, etc.</div>
+          <div class="row"><span class="k">Knowledge</span>Same embedded knowledge base, exposed as MCP tools</div>
+          <div class="row"><span class="k">Control</span>The agent plans; tNavigator executes its calls</div>
+          <div class="row"><span class="k">Data</span><span class="care">Depends on the MCP client and model provider</span></div>
+          <div class="row"><span class="k">Best for</span>Autonomous multi-step work: build, run, match, report</div>
+        </div>
+      </div>
+    </div>
+    <div class="caveat">Cloud-hosted LLMs and agents may send user data to third-party servers. Choose the client, model and deployment according to your data policy; the built-in AI Assistant keeps all processing local.</div>
+  </div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">2</span></div>
+  <div class="notes">The core slide. Internal = safety and simplicity: everything ships in the installer, data never leaves the machine. External = capability: frontier-model agents that can drive the whole platform. Say the caveat out loud; it defuses the security question before it is asked.</div>
+</section>
+
+<!-- ============ 3 · MCP CAPABILITIES & LICENSING ============ -->
+<section class="slide">
+  <div class="tag">AI in tNavigator 26.2</div>
+  <div class="body">
+    <h1 class="title">The Local MCP Server: one protocol, the whole platform</h1>
+    <div class="cols">
+      <div class="col">
+        <h3 class="h">What it lets an external agent do</h3>
+        <div class="cap"><span class="sq"></span><div><b>Search</b> tNavigator docs and the Workflow Python API</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Open, create and copy</b> tNavigator projects</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Execute workflows</b> with the full Model Designer API</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Run calculations</b> and read results back</div></div>
+      </div>
+      <div class="col">
+        <h3 class="h">Licenses for the Local MCP Server</h3>
+        <div class="lic">
+          <div class="chip"><b>1 × APIS</b><span>API Server</span></div>
+          <div class="chip"><b>1 × APIC</b><span>API Client</span></div>
+          <div class="chip"><b>1 × AI</b><span>Artificial Intelligence</span></div>
+        </div>
+        <div class="note">Ships as an installer component of tNavigator 26.2. Launch from the GUI: <b>Settings → Options → AI Server → Launch Local MCP Server</b>. No administrator privileges required.</div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:44px;background:var(--panel);border-left:5px solid var(--green);padding:16px 20px;font-size:21px">That's the capability on a slide. Two working examples follow: <b>building a model from scratch, and engineer-level analysis with dashboards.</b></p>
+  </div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">3</span></div>
+  <div class="notes">The protocol is open: any compatible MCP client connects. Examples use Claude and Codex; the official release deck shows the same thing driven by OpenCode with a local Gemma model, which keeps even the external route fully on-premises.</div>
+</section>
+
+<!-- ============ 4 · EXAMPLE 1 · MODEL BUILDING · VIDEO ============ -->
+<section class="slide dark">
+  <div class="body">
+    <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow">Example 1 · model building · recorded</div>
+    <h1 class="big" style="font-size:50px;margin-bottom:4px">Blank project → simulation results</h1>
+    <div class="routea-layout">
+      <div class="sub routea-copy" style="font-size:19px">One conversation over the Local MCP Server: the live tNavigator project on the left, the agent on the right. Grid, PVT, rel-perm, well, strategy, run. Final cumulative oil production: <b>217,042.25 sm&sup3;.</b></div>
+      <div class="vidwrap routea">
+        <video controls preload="metadata" src="../assets/route_a_first_oil.mp4"
+          aria-label="AI agent builds and runs a complete black-oil model in tNavigator"></video>
+      </div>
+    </div>
+  </div>
+  <span class="pgd">4</span>
+  <div class="notes">Play the accelerated recording (~1:34). Four beats to point out: grid/properties/PVT/rel-perm from one request; the well appearing in the 3D view; the simulation launching; the production profile read back at the end.</div>
+</section>
+
+<!-- ============ 5 · EXAMPLE 2 · DASHBOARDS ============ -->
+<section class="slide">
+  <div class="tag">AI in tNavigator 26.2</div>
+  <div class="body">
+    <h1 class="title">AI agent at work: match, forecast, report</h1>
+    <p class="lead" style="font-size:18px;margin-bottom:12px">Using BLACK_OIL_DEMO, the agent ran <b>616 simulations</b>: differential-evolution history matching, a <b>200-run sensitivity study</b>, segmented per-well DCA, and a <b>10-year forecast</b>. The interactive dashboards below show cumulative field error falling from <b>54% to 7.3%</b> for water and from <b>12% to 1.6%</b> for oil, with measured BHP included in the objective.</p>
+    <div style="display:flex;gap:16px;flex:1;min-height:0">
+      <div style="flex:1;overflow:hidden;border:1px solid var(--line)"><iframe src="../dashboards/hm_dashboard.html" title="Interactive AHM dashboard" loading="eager" style="display:block;width:166.667%;height:166.667%;border:0;transform:scale(.6);transform-origin:top left"></iframe></div>
+      <div style="flex:1;overflow:hidden;border:1px solid var(--line)"><iframe src="../dashboards/dca_dashboard.html" title="Interactive DCA and forecast dashboard" loading="eager" style="display:block;width:166.667%;height:166.667%;border:0;transform:scale(.6);transform-origin:top left"></iframe></div>
+    </div>
+  </div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">5</span></div>
+  <div class="notes">Be transparent: the campaign was pre-computed (~1 h of simulations). Scroll the embedded dashboards: objective function 65.1 → 2.77, per-well water-cut panels, DCA panels with one Arps fit per decline cycle. The agent produced the dashboards themselves as HTML reports. Key message: AI does the work, the engineer supervises and decides.</div>
+</section>
+
+<!-- ============ 6 · TAKEAWAYS ============ -->
+<section class="slide dark">
+  <div class="body">
+    <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow">Takeaways</div>
+    <h1 class="big" style="font-size:58px">The simulator now speaks AI</h1>
+    <ul class="takes">
+      <li><b>Internal:</b> the built-in AI Assistant ships with tNavigator and keeps every byte on your hardware.</li>
+      <li><b>External:</b> the Local MCP Server connects any compatible AI agent, which can search, build, run, match, forecast and report.</li>
+      <li><b>Engineering judgment stays human:</b> the agent executes; the engineer reviews and decides.</li>
+    </ul>
+  </div>
+  <span class="pgd">6</span>
+  <div class="notes">Close on the pairing: internal for data safety and everyday assistance, external for autonomous heavy lifting. Both come out of the standard 26.2 installer.</div>
+</section>
+
+<!-- ============ 7 · CLOSING ============ -->
+<section class="slide aus">
+  <div class="aus-head"><div class="rfd">ROCK FLOW DYNAMICS</div><div class="ws">AI IN tNAVIGATOR</div></div>
+  <img class="aus-logo" src="../assets/aus_logo_white.png" alt="tNavigator">
+  <img class="aus-close-icon" src="../assets/aus_icon_chat.svg" alt="">
+  <div class="aus-thanks">Thanks for listening!<small>Questions?</small></div>
+  <div class="aus-mail">asktNav@rfdyn.com | www.rfdyn.com</div>
+  <div class="notes">Take questions. Follow-ups by email.</div>
+</section>
+
+</div>
+<div id="hud">1 / 1 · ←/→ navigate · N notes · F fullscreen</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=-1;
+  function resizeEmbeddedDashboards(slide){
+    slide.querySelectorAll('iframe').forEach(frame=>{
+      const resize=()=>{
+        try{
+          const win=frame.contentWindow;
+          win.dispatchEvent(new win.Event('resize'));
+          if(win.Plotly&&win.Plotly.Plots){
+            frame.contentDocument.querySelectorAll('.js-plotly-plot').forEach(plot=>win.Plotly.Plots.resize(plot));
+          }
+        }catch(_){}
+      };
+      frame.addEventListener('load',()=>setTimeout(resize,100),{once:true});
+      requestAnimationFrame(()=>setTimeout(resize,100));
+    });
+  }
+  function show(n){
+    const next=Math.max(0,Math.min(slides.length-1,n));
+    if(next!==i){
+      slides.forEach((slide,k)=>{
+        const video=slide.querySelector('video');
+        if(video&&k!==next)video.pause();
+      });
+      const nextVideo=slides[next].querySelector('video');
+      if(nextVideo){
+        slides[next].dataset.videoAdvanceHandled='false';
+        if(nextVideo.ended)nextVideo.currentTime=0;
+      }
+    }
+    i=next;
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    document.getElementById('hud').firstChild.textContent=(i+1)+' / '+slides.length+' ';
+    history.replaceState(null,'','#'+(i+1));
+    fit();
+    resizeEmbeddedDashboards(slides[i]);
+  }
+  function advance(){
+    const slide=slides[i];
+    const video=slide.querySelector('video');
+    if(video&&slide.dataset.videoAdvanceHandled!=='true'){
+      slide.dataset.videoAdvanceHandled='true';
+      if(video.ended)video.currentTime=0;
+      video.play();
+      return;
+    }
+    show(i+1);
+  }
+  slides.forEach(slide=>{
+    const video=slide.querySelector('video');
+    if(video)video.addEventListener('play',()=>slide.dataset.videoAdvanceHandled='true');
+  });
+  function fit(){
+    const s=Math.min(innerWidth/1280,innerHeight/720);
+    slides[i].style.transform='scale('+s+')';
+  }
+  addEventListener('resize',fit);
+  addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')advance();
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key==='n'||e.key==='N')document.body.classList.toggle('shownotes');
+    else if(e.key==='f'||e.key==='F')document.documentElement.requestFullscreen?.();
+  });
+  addEventListener('click',e=>{
+    if(e.target.closest('a,video,button,input,select,textarea'))return;
+    advance();
+  });
+  show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
