@@ -360,6 +360,7 @@
     if(e.target.closest('a,video,button,input,select,textarea'))return;
     advance();
   });
+  if(location.search.includes('export'))document.getElementById('hud').style.display='none';
   show((parseInt(location.hash.slice(1))||1)-1);
 </script>
 </body>
