@@ -81,14 +81,17 @@
   .routea-copy{flex:0 0 20%;max-width:none;align-self:center}
   .routea-layout .vidwrap.routea{flex:1;margin-top:0;max-width:none}
 
-  /* ---------- two-way comparison ---------- */
-  .ways{display:flex;gap:26px;flex:none;align-items:stretch;margin-top:4px}
+  /* ---------- three-way comparison ---------- */
+  .ways{display:flex;gap:20px;flex:none;align-items:stretch;margin-top:4px}
   .way{flex:1;border:1px solid var(--line);display:flex;flex-direction:column;position:relative}
-  .way .hd{padding:16px 20px;font:700 25px/1.15 var(--display);color:#fff;background:var(--blue-deep)}
+  .way .grp{padding:9px 18px 0;font:700 13px/1 var(--body);letter-spacing:.18em;text-transform:uppercase}
+  .way.builtin .grp,.way.ext .grp{color:var(--green)}
+  .way.mcp .grp{color:var(--chrome)}
+  .way .hd{padding:12px 18px 14px;font:700 23px/1.15 var(--display);color:#fff;background:var(--blue-deep)}
   .way.builtin .hd{background:var(--green)}
   .way.mcp .hd{background:var(--chrome)}
-  .way .rows{padding:6px 20px 12px;display:flex;flex:1;flex-direction:column}
-  .way .row{padding:12px 0;border-bottom:1px solid var(--line);font-size:17.5px;line-height:1.4}
+  .way .rows{padding:6px 18px 12px;display:flex;flex:1;flex-direction:column}
+  .way .row{padding:11px 0;border-bottom:1px solid var(--line);font-size:16.5px;line-height:1.4;flex:1}
   .way .row:last-child{border-bottom:none}
   .way .row .k{display:block;font:700 12.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
   .good{color:var(--green);font-weight:700}
@@ -163,30 +166,37 @@
     <h1 class="title">Internal (AI Assistant) vs External (Local MCP Server) AI</h1>
     <div class="ways">
       <div class="way builtin">
-        <div class="hd">Internal · Built-in AI Assistant</div>
+        <div class="grp">Internal</div>
+        <div class="hd">1 · Built-in AI Assistant</div>
         <div class="rows">
-          <div class="row"><span class="k">Model</span>LLM shipped with tNavigator, runs on your hardware</div>
-          <div class="row"><span class="k">Knowledge</span>Embedded knowledge base (RAG)</div>
-          <div class="row"><span class="k">Control</span><span class="good">tNavigator controls executed AI commands</span></div>
-          <div class="row"><span class="k">Data</span><span class="good">Stays within the local tNavigator environment</span></div>
-          <div class="row"><span class="k">Best for</span>Q&amp;A, workflow generation, log analysis, fully offline</div>
+          <div class="row"><span class="k">What is it</span>The AI that comes inside tNavigator. Nothing extra to install.</div>
+          <div class="row"><span class="k">What it can do</span>Answers questions, generates workflows, explains calculation logs.</div>
+          <div class="row"><span class="k">Can it stay local?</span><span class="good">Yes, always.</span> Works without internet. Your data never leaves your computer.</div>
+        </div>
+      </div>
+      <div class="way ext">
+        <div class="grp">Internal</div>
+        <div class="hd">2 · AI Assistant + external model</div>
+        <div class="rows">
+          <div class="row"><span class="k">What is it</span>The same AI Assistant, connected to a bigger AI model that you choose.</div>
+          <div class="row"><span class="k">What it can do</span>The same tasks, with a stronger model.</div>
+          <div class="row"><span class="k">Can it stay local?</span><span class="good">Yes,</span> if the model runs on your own server (for example with Ollama). <span class="care">No,</span> if you use a cloud model.</div>
         </div>
       </div>
       <div class="way mcp">
-        <div class="hd">External · AI agent via Local MCP Server</div>
+        <div class="grp">External</div>
+        <div class="hd">3 · AI agent via Local MCP Server</div>
         <div class="rows">
-          <div class="row"><span class="k">Model</span>Any MCP client: Claude, Codex, OpenCode, etc.</div>
-          <div class="row"><span class="k">Knowledge</span>Same embedded knowledge base, exposed as MCP tools</div>
-          <div class="row"><span class="k">Control</span>The agent plans; tNavigator executes its calls</div>
-          <div class="row"><span class="k">Data</span><span class="care">Depends on the MCP client and model provider</span></div>
-          <div class="row"><span class="k">Best for</span>Autonomous multi-step work: build, run, match, report</div>
+          <div class="row"><span class="k">What is it</span>An outside AI agent (Claude, Codex, OpenCode) that drives tNavigator directly.</div>
+          <div class="row"><span class="k">What it can do</span>Builds models, runs simulations, matches history, writes reports.</div>
+          <div class="row"><span class="k">Can it stay local?</span><span class="good">Yes,</span> if the agent uses a local model (OpenCode + Gemma). <span class="care">No,</span> with cloud agents like Claude.</div>
         </div>
       </div>
     </div>
-    <div class="caveat">Cloud-hosted LLMs and agents may send user data to third-party servers. Choose the client, model and deployment according to your data policy; the built-in AI Assistant keeps all processing local.</div>
+    <div class="caveat">Simple rule: if the AI model runs on your own computers, your data stays with you. If it runs in the cloud, your data goes to the provider.</div>
   </div>
   <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">2</span></div>
-  <div class="notes">The core slide. Internal = safety and simplicity: everything ships in the installer, data never leaves the machine. External = capability: frontier-model agents that can drive the whole platform. Say the caveat out loud; it defuses the security question before it is asked.</div>
+  <div class="notes">The core slide, kept simple. Three options, one question each: can it stay local? Option 1 is always local. Option 2 is local if the company hosts the model itself (Ollama). Option 3 is the most capable and can also be fully local with OpenCode + Gemma, as shown in the official release deck. Say the simple rule out loud.</div>
 </section>
 
 <!-- ============ 3 · MCP CAPABILITIES & LICENSING ============ -->
