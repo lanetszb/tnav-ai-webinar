@@ -45,7 +45,7 @@
   .squares i:nth-child(4){background:var(--sq-blue)}
 
   /* ---------- light-slide chrome ---------- */
-  .slide:not(.aus)::after{content:"";position:absolute;left:0;top:0;right:0;height:12px;
+  .slide:not(.image):not(.aus)::after{content:"";position:absolute;left:0;top:0;right:0;height:12px;
     background:linear-gradient(90deg,var(--g1),var(--g2));z-index:9;pointer-events:none}
   .tag{position:absolute;top:30px;right:40px;z-index:6;background:none;color:var(--aus-navy);
     font:700 14px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;opacity:.75}
@@ -80,6 +80,36 @@
   .routea-layout{display:flex;align-items:stretch;gap:34px;flex:1;min-height:0;margin-top:26px}
   .routea-copy{flex:0 0 20%;max-width:none;align-self:center}
   .routea-layout .vidwrap.routea{flex:1;margin-top:0;max-width:none}
+
+  /* ---------- demo beats / demo-1 video (shared with the webinar deck) ---------- */
+  .beats{display:flex;gap:16px;margin-top:42px}
+  .beat{flex:1;background:rgba(4,14,20,.55);border-top:3px solid var(--teal);padding:18px 18px 20px}
+  .beat .n{font:700 30px/1 var(--display);color:var(--teal);display:block;margin-bottom:10px}
+  .beat .t{font-size:17.5px;line-height:1.4;color:#e6eef5}
+  .beat .t b{color:#fff}
+  .vidwrap.demo1{width:auto;max-width:100%;aspect-ratio:2155/1363;align-self:center;transform:scale(1.1)}
+
+  /* ---------- MCP connection options / getting started (shared with the webinar deck) ---------- */
+  .connection-options{flex:none;align-items:stretch;margin-top:18px}
+  .connection-options .way{min-height:350px}
+  .connection-options .way .rows{display:flex;flex:1;flex-direction:column;justify-content:space-evenly}
+  .connection-note{margin-top:50px!important;white-space:nowrap}
+  .steps{display:flex;gap:20px;margin-top:10px}
+  .step{flex:1;background:var(--panel);border-top:4px solid var(--blue);padding:20px 22px}
+  .step .n{font:700 34px/1 var(--display);color:var(--blue);display:block;margin-bottom:10px}
+  .step h4{font-size:19px;margin-bottom:8px}
+  .step p{font-size:16.5px;line-height:1.45;color:var(--ink)}
+  .step code{font:400 15px var(--mono);background:#e8eff6;padding:1px 6px}
+  .steps.connected{gap:32px;margin-top:24px;align-items:stretch}
+  .steps.connected .step{position:relative;min-height:225px;display:flex;flex-direction:column;justify-content:center}
+  .steps.connected .step h4{font-size:20px}
+  .steps.connected .step p{font-size:17.5px}
+  .steps.connected .step:not(:last-child)::after{content:"→";position:absolute;right:-27px;top:50%;transform:translateY(-50%);color:var(--blue);font:700 25px/1 var(--display);z-index:2}
+  .policy-note{margin-top:82px!important;border-left-color:var(--sq-red);background:#fdf3f2;color:#8c2a22}
+
+  /* ---------- full-bleed image slides (official release backup) ---------- */
+  .slide.image{background:#fff}
+  .slide.image img.full{width:100%;height:100%;object-fit:contain}
 
   /* ---------- three-way comparison ---------- */
   .ways{display:flex;gap:20px;flex:none;align-items:stretch;margin-top:4px}
@@ -226,7 +256,7 @@
         <div class="note">Ships as an installer component of tNavigator 26.2. Launch from the GUI: <b>Settings → Options → AI Server → Launch Local MCP Server</b>. No administrator privileges required.</div>
       </div>
     </div>
-    <p class="lead" style="margin-top:44px;background:var(--panel);border-left:5px solid var(--green);padding:16px 20px;font-size:21px">That's the capability on a slide. Now let's use it: <b>a live session first, then two worked examples.</b></p>
+    <p class="lead" style="margin-top:44px;background:var(--panel);border-left:5px solid var(--green);padding:16px 20px;font-size:21px">That's the capability on a slide. Now let's use it: <b>a live session first, then worked examples and how to set it up yourselves.</b></p>
   </div>
   <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">3</span></div>
   <div class="notes">Licensing detail if asked: the AI license is taken when the MCP server launches, not per agent request. Two agents working in parallel need a second APIS/APIC pair, so roughly five licenses.</div>
@@ -239,17 +269,52 @@
     <div class="eyebrow">Live · switching to tNavigator now</div>
     <h1 class="big" style="font-size:56px">Live MCP session on a real project</h1>
     <div class="sub">Claude Code connected to the Local MCP Server, driving tNavigator on this machine: open a project, query it, build and run a workflow, read the results back. Ask for anything along the way; the point of a live session is to steer it.</div>
-    <div class="sub" style="margin-top:22px;font-size:19px;color:#9fb8c9">Backup below in case the live run misbehaves: the same setup recorded, blank project to simulation results in one conversation (~1:34, accelerated).</div>
-    <div class="vidwrap routea" style="flex:none;height:300px;margin-top:20px">
-      <video controls preload="metadata" src="../assets/route_a_first_oil.mp4"
-        aria-label="AI agent builds and runs a complete black-oil model in tNavigator"></video>
+    <div class="beats">
+      <div class="beat"><span class="n">1</span><div class="t">Docs &amp; API answered <b>with citations</b></div></div>
+      <div class="beat"><span class="n">2</span><div class="t">Grid, properties, PVT, rel-perm: <b>one request</b></div></div>
+      <div class="beat"><span class="n">3</span><div class="t">Well placed, strategy set, <b>the simulation runs</b></div></div>
+      <div class="beat"><span class="n">4</span><div class="t">Production profile <b>read back &amp; reported</b></div></div>
     </div>
   </div>
   <span class="pgd">4</span>
-  <div class="notes">Main event. Switch to the live tNavigator + Claude Code screen here. The recording is insurance only; play it if the live demo stalls. Four beats either way: grid/PVT/rel-perm from one request, the well in the 3D view, the run launching, results read back.</div>
+  <div class="notes">Main event. Switch to the live tNavigator + Claude Code screen here. The two recorded examples on the next slides are the insurance: play them if the live run stalls, skip through them quickly if it goes well.</div>
 </section>
 
-<!-- ============ 5 · EXAMPLE · MATCH, FORECAST, REPORT ============ -->
+<!-- ============ 5 · EXAMPLE 1 · DOCS & API SEARCH · VIDEO ============ -->
+<section class="slide dark">
+  <div class="body">
+    <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow">Example 1 · docs &amp; API search · recorded</div>
+    <h1 class="big" style="font-size:52px;margin-bottom:6px">A conversation that keeps the context</h1>
+    <div class="sub" style="font-size:18px">Guidance supported by cited tNavigator sources → deck-only implementation → a clear keyword example.</div>
+    <div class="vidwrap demo1">
+      <video controls preload="metadata" src="../assets/demo_1_documentation_search.mp4"
+        aria-label="Demo: tNavigator documentation search through MCP"></video>
+    </div>
+  </div>
+  <span class="pgd">5</span>
+  <div class="notes">63-second recording, a real three-turn conversation: the agent cites the hysteresis documentation, adapts to the .DATA-deck constraint, finishes with a concrete example. Emphasise context retention, not just question answering.</div>
+</section>
+
+<!-- ============ 6 · EXAMPLE 2 · MODEL BUILDING · VIDEO ============ -->
+<section class="slide dark">
+  <div class="body">
+    <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow">Example 2 · model building · recorded</div>
+    <h1 class="big" style="font-size:50px;margin-bottom:4px">Blank project → simulation results</h1>
+    <div class="routea-layout">
+      <div class="sub routea-copy" style="font-size:19px">One conversation over the Local MCP Server: the live tNavigator project on the left, the agent on the right. Grid, PVT, rel-perm, well, strategy, run. Final cumulative oil production: <b>217,042.25 sm&sup3;.</b></div>
+      <div class="vidwrap routea">
+        <video controls preload="metadata" src="../assets/route_a_first_oil.mp4"
+          aria-label="AI agent builds and runs a complete black-oil model in tNavigator"></video>
+      </div>
+    </div>
+  </div>
+  <span class="pgd">6</span>
+  <div class="notes">Play the accelerated recording (~1:34). Four beats to point out: grid/properties/PVT/rel-perm from one request; the well appearing in the 3D view; the simulation launching; the production profile read back at the end.</div>
+</section>
+
+<!-- ============ 7 · EXAMPLE 3 · MATCH, FORECAST, REPORT ============ -->
 <section class="slide">
   <div class="tag">AI in tNavigator 26.2</div>
   <div class="body">
@@ -260,11 +325,11 @@
       <div style="flex:1;overflow:hidden;border:1px solid var(--line)"><iframe src="../dashboards/dca_dashboard.html" title="Interactive DCA and forecast dashboard" loading="eager" style="display:block;width:166.667%;height:166.667%;border:0;transform:scale(.6);transform-origin:top left"></iframe></div>
     </div>
   </div>
-  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">5</span></div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">7</span></div>
   <div class="notes">Be transparent: the campaign was pre-computed (~1 h of simulations). Scroll the dashboards: objective 65.1 → 2.77, per-well water-cut panels, one Arps fit per decline cycle. The agent produced the dashboards themselves as HTML. Key message: AI does the work, the engineer supervises and decides.</div>
 </section>
 
-<!-- ============ 6 · CASE STUDY · ND CONVERSION ============ -->
+<!-- ============ 8 · CASE STUDY · ND CONVERSION ============ -->
 <section class="slide case">
   <div class="tag">Case study · August 2026</div>
   <div class="body">
@@ -290,11 +355,58 @@
     </div>
     <div class="note" style="margin-top:14px">Real conversion job, completed August 2026. Deliverable: paste-ready well-test inputs for tNavigator's Well Designer. Client identifiers withheld.</div>
   </div>
-  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">6</span></div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">8</span></div>
   <div class="notes">Story to tell: this wasn't a canned demo — a client migration blocked on a missing third-party license. The agent did the format archaeology and the cross-checking; the engineer spot-checked against PROSPER and made the judgment calls. Show anonymized W-01…W-15 files from the session folder if asked — never the source project.</div>
 </section>
 
-<!-- ============ 7 · TAKEAWAYS & NEXT STEP ============ -->
+<!-- ============ 9 · TWO WAYS TO CONNECT ============ -->
+<section class="slide">
+  <div class="tag">AI in tNavigator 26.2</div>
+  <div class="body">
+    <h1 class="title">Connecting tNavigator to MCP: two options</h1>
+    <div class="ways connection-options">
+      <div class="way builtin">
+        <div class="hd">From the GUI · Local MCP Server</div>
+        <div class="rows">
+          <div class="row"><span class="k">Launch</span><b>Settings → Options → AI Server → Launch Local MCP Server</b></div>
+          <div class="row"><span class="k">Scope</span>Documentation and API search, plus <b>full control of the open project</b></div>
+          <div class="row"><span class="k">Runs</span>While the main tNavigator window is open, on your workstation</div>
+          <div class="row"><span class="k">Best for</span>Interactive project work with live GUI control</div>
+        </div>
+      </div>
+      <div class="way mcp">
+        <div class="hd">Standalone · tNavigator AI Server</div>
+        <div class="rows">
+          <div class="row"><span class="k">Launch</span>Installed as a service in <b>MCP-only mode</b>, no GUI needed</div>
+          <div class="row"><span class="k">Scope</span>Documentation and Workflow Python API search over HTTP</div>
+          <div class="row"><span class="k">Runs</span>Always on, CPU only, modest hardware; serves the whole team</div>
+          <div class="row"><span class="k">Best for</span>A shared, permanent knowledge-base endpoint</div>
+        </div>
+      </div>
+    </div>
+    <div class="note connection-note">No separate download: both servers are <b>bundled with tNavigator 26.2</b> as installer components and support compatible MCP clients over HTTP.</div>
+  </div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">9</span></div>
+  <div class="notes">Left = the route used in today's live session; it needs the GUI open. Right = the headless deployment for teams; the same binary that powers the full AI Assistant server, run in MCP-only mode. Both come out of the standard installer, no separate download.</div>
+</section>
+
+<!-- ============ 10 · GETTING STARTED ============ -->
+<section class="slide">
+  <div class="tag">AI in tNavigator 26.2</div>
+  <div class="body">
+    <h1 class="title">Try it Monday morning</h1>
+    <div class="steps connected">
+      <div class="step"><span class="n">1</span><h4>Install the component</h4><p>tNavigator 26.2 installer → <i>"MCP Server for Communication with AI Agents"</i>. On by default for Workstation installs. No admin rights needed.</p></div>
+      <div class="step"><span class="n">2</span><h4>Launch from the GUI</h4><p><code>Settings → Options → AI Server → Launch Local MCP Server</code>. Runs while the main tNavigator window is open.</p></div>
+      <div class="step"><span class="n">3</span><h4>Connect your AI client</h4><p>Copy the example MCP configuration from the dialog and adapt it for Claude, Codex, OpenCode, or another compatible MCP client.</p></div>
+    </div>
+    <div class="note policy-note">Cloud-hosted agents may send project data to third-party servers. Select the client, model and deployment according to your data policy; the built-in AI Assistant and the OpenCode + Ollama route keep processing local.</div>
+  </div>
+  <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">10</span></div>
+  <div class="notes">The dialog has a "Copy Example Configuration of Local MCP Server to Clipboard" button — mention it, it makes step 3 trivial. The backup image slides at the end show the actual installer component and launch dialog.</div>
+</section>
+
+<!-- ============ 11 · TAKEAWAYS & NEXT STEP ============ -->
 <section class="slide dark">
   <div class="body">
     <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -306,19 +418,33 @@
       <li><b>Suggested POC path:</b> start with a strong cloud model on a non-sensitive project to see the ceiling; switching to fully local afterwards is a configuration change.</li>
     </ul>
   </div>
-  <span class="pgd">7</span>
+  <span class="pgd">11</span>
   <div class="notes">Close with the concrete proposal: a scoped POC on a Harbour-chosen project. Agree scope, dataset sensitivity, and who from Harbour drives. Licensing recap available on slide 3 if it comes up again.</div>
 </section>
 
-<!-- ============ 8 · CLOSING ============ -->
+<!-- ============ 12 · CLOSING ============ -->
 <section class="slide aus">
   <div class="aus-head"><div class="rfd">ROCK FLOW DYNAMICS</div><div class="ws">AI IN tNAVIGATOR</div></div>
   <img class="aus-logo" src="../assets/aus_logo_white.png" alt="tNavigator">
   <img class="aus-close-icon" src="../assets/aus_icon_chat.svg" alt="">
   <div class="aus-thanks">Thanks for listening!<small>Questions?</small></div>
   <div class="aus-mail">asktNav@rfdyn.com | www.rfdyn.com</div>
-  <div class="notes">Take questions. Follow-ups by email; offer to send this deck's link.</div>
+  <div class="notes">Take questions. Follow-ups by email; offer to send this deck's link. Backup slides follow — press → only if needed in Q&amp;A.</div>
 </section>
+
+<!-- ============ BACKUP · OFFICIAL RELEASE SLIDES ============ -->
+<section class="slide dark">
+  <div class="body">
+    <div class="squares" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="eyebrow" style="margin-top:26px">Backup · Q&amp;A</div>
+    <h1 class="big" style="font-size:56px">Official tNavigator 26.2 release slides</h1>
+    <div class="sub">Installer component, the launch dialog, and the fully local OpenCode + Gemma setup.</div>
+  </div>
+  <div class="notes">Only if questions call for them.</div>
+</section>
+<section class="slide image"><img class="full" src="../assets/rel-042.svg" alt="New installer component"><div class="notes">Q: "what exactly do I install?" — the MCP Server installer component.</div></section>
+<section class="slide image"><img class="full" src="../assets/rel-044.svg" alt="Launch Local MCP Server"><div class="notes">The actual GUI launch dialog, including the copy-example-configuration button.</div></section>
+<section class="slide image"><img class="full" src="../assets/rel-045.svg" alt="Project management via MCP"><div class="notes">The slide Oja quoted in his email: OpenCode terminal with gemma4:26b via Ollama, plus the license note. Fully local option 3.</div></section>
 
 </div>
 <div id="hud">1 / 1 · ←/→ navigate · N notes · F fullscreen</div>
