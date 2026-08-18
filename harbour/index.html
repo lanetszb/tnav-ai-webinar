@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI in tNavigator — Harbour Energy</title>
+<title>AI in tNavigator: Harbour Energy</title>
 <style>
   /* ---------- brand fonts (shared with the webinar deck) ---------- */
   @font-face{font-family:"PT Sans Narrow";font-weight:700;src:url("../assets/ptnarrow-bold.woff") format("woff")}
@@ -337,7 +337,7 @@
     <div class="cols">
       <div class="col">
         <h3 class="h">The task</h3>
-        <div class="cap"><span class="sq"></span><div>A <b>15-well gas network</b> with material-balance tanks, built in GAP&nbsp;v14.5 / PROSPER — and <b>no IPM license</b> available to open it.</div></div>
+        <div class="cap"><span class="sq"></span><div>A <b>15-well gas network</b> with material-balance tanks, built in GAP&nbsp;v14.5 / PROSPER, and <b>no IPM license</b> available to open it.</div></div>
         <div class="cap"><span class="sq"></span><div>tNavigator's ND import brings <b>topology and VFP/VLP</b>, but the well <b>IPRs don't survive</b> the import.</div></div>
         <div class="cap"><span class="sq"></span><div>The text exports turned out to be <b>stale templates</b>: the only source of truth was the <b>binary</b> .Out / .gap files.</div></div>
       </div>
@@ -345,7 +345,7 @@
         <h3 class="h">What the agent did</h3>
         <div class="cap"><span class="sq"></span><div><b>Reverse-engineered the binary format</b> and extracted full 20-point IPR tables, Jones coefficients and well-test points for all 15 wells.</div></div>
         <div class="cap"><span class="sq"></span><div><b>Verified digit-exact</b> against PROSPER reports opened by the engineer: 3 wells checked, 3/3 exact on every value.</div></div>
-        <div class="cap"><span class="sq"></span><div><b>Caught real issues:</b> stale cached tables one generation old, and single-test IPRs extrapolated far beyond data — flagged for engineering review.</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Caught real issues:</b> stale cached tables one generation old, and single-test IPRs extrapolated far beyond data, flagged for engineering review.</div></div>
       </div>
     </div>
     <div class="lic" style="margin-top:26px">
@@ -356,7 +356,7 @@
     <div class="note" style="margin-top:14px">Real conversion job, completed August 2026. Deliverable: paste-ready well-test inputs for tNavigator's Well Designer. Client identifiers withheld.</div>
   </div>
   <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">8</span></div>
-  <div class="notes">Story to tell: this wasn't a canned demo — a client migration blocked on a missing third-party license. The agent did the format archaeology and the cross-checking; the engineer spot-checked against PROSPER and made the judgment calls. Show anonymized W-01…W-15 files from the session folder if asked — never the source project.</div>
+  <div class="notes">Story to tell: this wasn't a canned demo: a client migration blocked on a missing third-party license. The agent did the format archaeology and the cross-checking; the engineer spot-checked against PROSPER and made the judgment calls. Show anonymized W-01…W-15 files from the session folder if asked, never the source project.</div>
 </section>
 
 <!-- ============ 9 · TWO WAYS TO CONNECT ============ -->
@@ -403,7 +403,7 @@
     <div class="note policy-note">Cloud-hosted agents may send project data to third-party servers. Select the client, model and deployment according to your data policy; the built-in AI Assistant and the OpenCode + Ollama route keep processing local.</div>
   </div>
   <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">10</span></div>
-  <div class="notes">The dialog has a "Copy Example Configuration of Local MCP Server to Clipboard" button — mention it, it makes step 3 trivial. The backup image slides at the end show the actual installer component and launch dialog.</div>
+  <div class="notes">The dialog has a "Copy Example Configuration of Local MCP Server to Clipboard" button: mention it, it makes step 3 trivial. The backup image slides at the end show the actual installer component and launch dialog.</div>
 </section>
 
 <!-- ============ 11 · TAKEAWAYS & NEXT STEP ============ -->
@@ -429,7 +429,7 @@
   <img class="aus-close-icon" src="../assets/aus_icon_chat.svg" alt="">
   <div class="aus-thanks">Thanks for listening!<small>Questions?</small></div>
   <div class="aus-mail">asktNav@rfdyn.com | www.rfdyn.com</div>
-  <div class="notes">Take questions. Follow-ups by email; offer to send this deck's link. Backup slides follow — press → only if needed in Q&amp;A.</div>
+  <div class="notes">Take questions. Follow-ups by email; offer to send this deck's link. Backup slides follow; press → only if needed in Q&amp;A.</div>
 </section>
 
 <!-- ============ BACKUP · OFFICIAL RELEASE SLIDES ============ -->
@@ -442,7 +442,7 @@
   </div>
   <div class="notes">Only if questions call for them.</div>
 </section>
-<section class="slide image"><img class="full" src="../assets/rel-042.svg" alt="New installer component"><div class="notes">Q: "what exactly do I install?" — the MCP Server installer component.</div></section>
+<section class="slide image"><img class="full" src="../assets/rel-042.svg" alt="New installer component"><div class="notes">Q: "what exactly do I install?" The MCP Server installer component.</div></section>
 <section class="slide image"><img class="full" src="../assets/rel-044.svg" alt="Launch Local MCP Server"><div class="notes">The actual GUI launch dialog, including the copy-example-configuration button.</div></section>
 <section class="slide image"><img class="full" src="../assets/rel-045.svg" alt="Project management via MCP"><div class="notes">The slide Oja quoted in his email: OpenCode terminal with gemma4:26b via Ollama, plus the license note. Fully local option 3.</div></section>
 
