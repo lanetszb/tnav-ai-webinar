@@ -343,20 +343,21 @@
       </div>
       <div class="col">
         <h3 class="h">What the agent did</h3>
-        <div class="cap"><span class="sq"></span><div><b>Reverse-engineered the binary format</b> and extracted full 20-point IPR tables, Jones coefficients and well-test points for all 15 wells.</div></div>
-        <div class="cap"><span class="sq"></span><div><b>Verified digit-exact</b> against PROSPER reports opened by the engineer: 3 wells checked, 3/3 exact on every value.</div></div>
-        <div class="cap"><span class="sq"></span><div><b>Caught real issues:</b> stale cached tables one generation old, and single-test IPRs extrapolated far beyond data, flagged for engineering review.</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Reverse-engineered the binary format</b>, extracted full 20-point IPR tables for all 15 wells, and <b>verified digit-exact</b> against PROSPER reports: 3 wells checked, 3/3 exact on every value.</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Recovered GAP's exact inflow law</b> (Forchheimer in real-gas pseudo-pressures, validated against GAP to 1&ndash;2%) and refitted it as <b>Back pressure C&amp;n</b> curves in tNavigator.</div></div>
+        <div class="cap"><span class="sq"></span><div><b>Uncovered a hidden double depletion penalty:</b> the integrated MBA run applies its own depletion correction on top of C&amp;n curves that already track current pressure. Fixed with monthly IPR reconnect rules: forecast <b>MAPE 15.3% &rarr; 5.8%</b>.</div></div>
       </div>
     </div>
     <div class="lic" style="margin-top:26px">
       <div class="chip"><b>15 / 15</b><span>wells recovered</span></div>
       <div class="chip"><b>3 / 3</b><span>digit-exact vs PROSPER</span></div>
+      <div class="chip"><b>5.8%</b><span>forecast MAPE, was 15.3%</span></div>
       <div class="chip"><b>0</b><span>IPM licenses used</span></div>
     </div>
     <div class="note" style="margin-top:14px">Real conversion job, completed August 2026. Deliverable: paste-ready well-test inputs for tNavigator's Well Designer. Client identifiers withheld.</div>
   </div>
   <div class="foot"><img src="../assets/tnav_logo.png" alt="tNavigator"><span class="pg">8</span></div>
-  <div class="notes">Story to tell: this wasn't a canned demo: a client migration blocked on a missing third-party license. The agent did the format archaeology and the cross-checking; the engineer spot-checked against PROSPER and made the judgment calls. Show anonymized W-01…W-15 files from the session folder if asked, never the source project.</div>
+  <div class="notes">Story in two acts. Act 1, extraction: format archaeology on binary .Out/.gap, digit-exact verification vs PROSPER, plus catching stale cached tables one generation old. Act 2, matching: recovered GAP's true inflow physics (Forchheimer in pseudo-pressures), fitted Back pressure C&amp;n in tNavigator, then discovered the integrated MBA run silently applies a Fetkovich depletion correction on top of C&amp;n, so depletion is counted twice. Monthly Reconnect IPR rules fixed it; forecast MAPE went from 15.3% to 5.8% and the residual is untuned network hydraulics. Filed as a ticket to tNav developers. Engineer stayed in the loop for all judgment calls. Show anonymized W-01…W-15 files if asked, never the source project.</div>
 </section>
 
 <!-- ============ 9 · TWO WAYS TO CONNECT ============ -->
